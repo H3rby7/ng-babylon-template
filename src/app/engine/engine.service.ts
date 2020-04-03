@@ -23,8 +23,6 @@ export class EngineService {
   private scene: Scene;
   private light: Light;
 
-  private sphere: Mesh;
-
   public constructor(
     private ngZone: NgZone,
     private windowRef: WindowRefService
@@ -61,24 +59,6 @@ export class EngineService {
     // move the sphere upward 1/2 of its height
     cardSpadesAce.position.y = 1;
     cardSpadesAce2.position.x = 10;
-
-    // simple rotation along the y axis
-    cardSpadesAce.registerAfterRender(() => {
-      cardSpadesAce.rotate(
-        new Vector3(0, 1, 0),
-        0.02,
-        BABYLON.Space.LOCAL
-      );
-    });
-
-    // simple rotation along the y axis
-    cardSpadesAce2.registerAfterRender(() => {
-      cardSpadesAce2.rotate(
-        new Vector3(0, 1, 0),
-        0.02,
-        BABYLON.Space.LOCAL
-      );
-    });
 
     // generates the world x-y-z axis for better understanding
     this.showWorldAxis(8);
