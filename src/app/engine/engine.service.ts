@@ -11,7 +11,6 @@ import {
   Mesh,
   Scene,
   StandardMaterial,
-  Texture,
   Vector3
 } from 'babylonjs';
 import 'babylonjs-materials';
@@ -57,7 +56,7 @@ export class EngineService {
     this.light = new HemisphericLight('light1', new Vector3(0, 1, 0), this.scene);
 
     // create a built-in "sphere" shape; its constructor takes 4 params: name, subdivisions, radius, scene
-    this.sphere = createCard(this.scene, 'jack_of_clubs');
+    this.sphere = createCard(this.scene, 'jack_of_clubs', 5);
 
     // move the sphere upward 1/2 of its height
     this.sphere.position.y = 1;
