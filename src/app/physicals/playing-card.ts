@@ -19,15 +19,19 @@ export const createCard = (scene: Scene, name: string, size = 10): BABYLON.Mesh 
   const myDynamicTexture = new BABYLON.DynamicTexture('cardDt', 366, scene, false);
   const ctx = myDynamicTexture.getContext();
 
-  const img = new Image();
-  img.src = 'assets/textures/card.jpg';
-  img.onload = () => {
-    ctx.drawImage(img, 0, 0);
+  const backSide = new Image();
+  backSide.src = 'assets/textures/card_back.jpg';
+  backSide.onload = () => {
+    ctx.drawImage(backSide, 0, 0, 183, 275, 0, 0, 183, 275);
     myDynamicTexture.update();
   };
-  // create the material with its texture for the sphere and assign it to the sphere
-  // const cardMaterial = new BABYLON.StandardMaterial('card', scene);
-  // cardMaterial.ambientTexture = new Texture('assets/textures/card.jpg', scene);
+
+  const frontSide = new Image();
+  frontSide.src = 'assets/textures/card_diamonds_9.jpg';
+  frontSide.onload = () => {
+    ctx.drawImage(frontSide, 0, 0, 183, 275, 183, 0, 183, 275);
+    myDynamicTexture.update();
+  };
 
   const cardMaterial = new BABYLON.StandardMaterial('cardMat', scene);
   cardMaterial.ambientTexture = myDynamicTexture;
