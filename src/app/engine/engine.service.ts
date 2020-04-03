@@ -1,7 +1,7 @@
 import {WindowRefService} from '../services/window-ref.service';
 import {ElementRef, Injectable, NgZone} from '@angular/core';
 import 'babylonjs-materials';
-import {createAll} from '../physicals/playing-cards';
+import {createAll} from '../physicals/playing-card/playing-card';
 import Scene = BABYLON.Scene;
 import Engine = BABYLON.Engine;
 import Mesh = BABYLON.Mesh;
@@ -48,8 +48,8 @@ export class EngineService {
     // attach the camera to the canvas
     this.camera.attachControl(this.canvas, false);
 
-    // create a basic light, aiming 0,1,0 - meaning, to the sky
-    this.light = new HemisphericLight('light1', new Vector3(0, 1, 0), this.scene);
+    this.light = new HemisphericLight('light1', new Vector3(0, 0, -1), this.scene);
+    this.light = new HemisphericLight('light2', new Vector3(0, 0, 1), this.scene);
 
     createAll(this.scene, 3);
 

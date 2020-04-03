@@ -22,6 +22,8 @@ export const gridX = [SUIT.SPADES, SUIT.HEARTS, SUIT.DIAMONDS, SUIT.CLUBS];
 export const gridY = [RANK.ACE, RANK.TWO, RANK.THREE, RANK.FOUR, RANK.FIVE, RANK.SIX, RANK.SEVEN, RANK.EIGHT, RANK.NINE, RANK.TEN, RANK.JACK, RANK.QUEEN, RANK.KING];
 
 export const drawCardBySuitAndName = (dynTexture: BABYLON.DynamicTexture, materialDimension: Dimension, suit: SUIT, rank: RANK) => {
+  // As the card will be same height as the material, but only half as wide, as the material has front/backside
+  const cardWidth = materialDimension.width / 2;
   // Get position of card in texture pack, when in doubt use {0, 0}
   const grid = {x: gridY.indexOf(rank), y: gridX.indexOf(suit)};
   if (grid.x === -1) {
@@ -37,8 +39,8 @@ export const drawCardBySuitAndName = (dynTexture: BABYLON.DynamicTexture, materi
   backSide.src = backSideTextureSrc;
   backSide.onload = () => {
     ctx.drawImage(backSide,
-      0, 0, materialDimension.width, materialDimension.height,
-      0, 0, materialDimension.width, materialDimension.height);
+      0, 0, cardWidth, materialDimension.height,
+      0, 0, cardWidth, materialDimension.height);
     dynTexture.update();
   };
 
@@ -54,9 +56,9 @@ export const drawCardBySuitAndName = (dynTexture: BABYLON.DynamicTexture, materi
       offsetTop, // image start y
       cardTexture.width, // image width
       cardTexture.height, // image height
-      materialDimension.width, // canvas to x
+      cardWidth, // canvas to x
       0,
-      materialDimension.width, // destination width
+      cardWidth, // destination width
       materialDimension.height, // destination height
     );
     dynTexture.update();
