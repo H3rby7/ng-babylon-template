@@ -47,12 +47,7 @@ export const createAll = (scene: Scene, size = 10): Mesh[] => {
   const meshes: Mesh[] = [];
   for (const x of gridX) {
     for (const y of gridY) {
-      const mesh = createCard(scene, x, y, size);
-      mesh.position.x = gridY.indexOf(y) * size;
-      mesh.position.y = gridX.indexOf(x) * size;
-      if ((mesh.position.x + mesh.position.y) % 2 === 0) {
-        mesh.rotation = new Vector3(0, Math.PI, 0);
-      }
+        meshes.push(createCard(scene, x, y, size));
     }
   }
   return meshes;

@@ -51,7 +51,17 @@ export class EngineService {
     this.light = new HemisphericLight('light1', new Vector3(0, 0, -1), this.scene);
     this.light = new HemisphericLight('light2', new Vector3(0, 0, 1), this.scene);
 
-    createAll(this.scene, 3);
+    const cardMeshes = createAll(this.scene, 3);
+
+    // Create a nice grid and flip every second card
+    for (let i = 0; i < cardMeshes.length; i++) {
+      const mesh = cardMeshes[i];
+      mesh.position.x = (i % 13) * 3;
+      mesh.position.y = Math.floor(i / 13 % 4) * 3;
+      if ((mesh.position.x + mesh.position.y) % 2 === 0) {
+        mesh.rotation = new Vector3(0, Math.PI, 0);
+      }
+    }
 
     // generates the world x-y-z axis for better understanding
     this.showWorldAxis(8);
