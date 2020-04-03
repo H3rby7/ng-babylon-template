@@ -40,7 +40,7 @@ export class EngineService {
     this.scene.clearColor = new Color4(0, 0, 0, 0);
 
     // create a FreeCamera, and set its position to (x:5, y:10, z:-20 )
-    this.camera = new FreeCamera('camera1', new Vector3(5, 10, -20), this.scene);
+    this.camera = new FreeCamera('camera1', new Vector3(-20, 20, -30), this.scene);
 
     // target the camera to scene origin
     this.camera.setTarget(Vector3.Zero());
@@ -57,7 +57,7 @@ export class EngineService {
     for (let i = 0; i < cardMeshes.length; i++) {
       const mesh = cardMeshes[i];
       mesh.position.x = (i % 13) * 3;
-      mesh.position.y = Math.floor(i / 13 % 4) * 3;
+      mesh.position.y = Math.floor(i / 13 % 4) * 4;
       if ((mesh.position.x + mesh.position.y) % 2 === 0) {
         mesh.rotation = new Vector3(0, Math.PI, 0);
       }

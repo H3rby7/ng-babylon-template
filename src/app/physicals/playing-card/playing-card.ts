@@ -5,7 +5,6 @@ import {Dimension} from '../dimension';
 import Scene = BABYLON.Scene;
 import Mesh = BABYLON.Mesh;
 import Color3 = BABYLON.Color3;
-import Vector3 = BABYLON.Vector3;
 
 // front image = half the whole image along the width
 const vectorToFrontSide = new Vector4(0.5, 0, 1, 1);
@@ -47,7 +46,7 @@ export const createAll = (scene: Scene, size = 10): Mesh[] => {
   const meshes: Mesh[] = [];
   for (const x of gridX) {
     for (const y of gridY) {
-        meshes.push(createCard(scene, x, y, size));
+      meshes.push(createCard(scene, x, y, size));
     }
   }
   return meshes;
