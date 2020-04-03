@@ -1,20 +1,18 @@
-import {WindowRefService} from './../services/window-ref.service';
+import {WindowRefService} from '../services/window-ref.service';
 import {ElementRef, Injectable, NgZone} from '@angular/core';
-import {
-  Color3,
-  Color4,
-  DynamicTexture,
-  Engine,
-  FreeCamera,
-  HemisphericLight,
-  Light,
-  Mesh,
-  Scene,
-  StandardMaterial,
-  Vector3
-} from 'babylonjs';
 import 'babylonjs-materials';
 import {createCard} from '../physicals/playing-card';
+import Scene = BABYLON.Scene;
+import Engine = BABYLON.Engine;
+import Mesh = BABYLON.Mesh;
+import FreeCamera = BABYLON.FreeCamera;
+import Light = BABYLON.Light;
+import Color4 = BABYLON.Color4;
+import Vector3 = BABYLON.Vector3;
+import DynamicTexture = BABYLON.DynamicTexture;
+import StandardMaterial = BABYLON.StandardMaterial;
+import Color3 = BABYLON.Color3;
+import HemisphericLight = BABYLON.HemisphericLight;
 
 @Injectable({providedIn: 'root'})
 export class EngineService {
