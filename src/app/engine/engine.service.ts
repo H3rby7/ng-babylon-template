@@ -14,6 +14,8 @@ import StandardMaterial = BABYLON.StandardMaterial;
 import Color3 = BABYLON.Color3;
 import HemisphericLight = BABYLON.HemisphericLight;
 
+const size = 3;
+
 @Injectable({providedIn: 'root'})
 export class EngineService {
   private canvas: HTMLCanvasElement;
@@ -21,6 +23,8 @@ export class EngineService {
   private camera: FreeCamera;
   private scene: Scene;
   private light: Light;
+
+  private cards: Mesh[];
 
   public constructor(
     private ngZone: NgZone,
@@ -51,20 +55,35 @@ export class EngineService {
     this.light = new HemisphericLight('light1', new Vector3(0, 0, -1), this.scene);
     this.light = new HemisphericLight('light2', new Vector3(0, 0, 1), this.scene);
 
-    const cardMeshes = createAll(this.scene, 3);
-
-    // Create a nice grid and flip every second card
-    for (let i = 0; i < cardMeshes.length; i++) {
-      const mesh = cardMeshes[i];
-      mesh.position.x = (i % 13) * 3;
-      mesh.position.y = Math.floor(i / 13 % 4) * 4;
-      if ((mesh.position.x + mesh.position.y) % 2 === 0) {
-        mesh.rotation = new Vector3(0, Math.PI, 0);
-      }
-    }
+    this.cards = createAll(this.scene, size);
+    this.layoutToGrid();
 
     // generates the world x-y-z axis for better understanding
     this.showWorldAxis(8);
+  }
+
+  // Create a nice grid and flip every second card
+  public layoutToGrid() {
+    console.log('grid layout');
+    for (let i = 0; i < this.cards.length; i++) {
+      const mesh = this.cards[i];
+      const x = (i % 13);
+      const y = Math.floor(i / 13 % 4);
+      mesh.position.x = x * size;
+      mesh.position.y = y * (size + 1);
+      mesh.rotation = new Vector3(0, (x + y) % 2 === 0 ? Math.PI : 0, 0);
+    }
+  }
+
+  // Create a deck
+  public layoutToDeck() {
+    console.log('deck layout');
+    for (let i = 0; i < this.cards.length; i++) {
+      const mesh = this.cards[i];
+      mesh.rotation = new Vector3(-0.5 * Math.PI, 0, 0);
+      mesh.position.y = 0.01 * i;
+      mesh.position.x = 0;
+    }
   }
 
   public animate(): void {
