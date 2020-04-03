@@ -1,8 +1,7 @@
 import {WindowRefService} from '../services/window-ref.service';
 import {ElementRef, Injectable, NgZone} from '@angular/core';
 import 'babylonjs-materials';
-import {createCard} from '../physicals/playing-cards';
-import {RANK, SUIT} from '../physicals/playing-cards/constants';
+import {createAll} from '../physicals/playing-cards';
 import Scene = BABYLON.Scene;
 import Engine = BABYLON.Engine;
 import Mesh = BABYLON.Mesh;
@@ -52,13 +51,7 @@ export class EngineService {
     // create a basic light, aiming 0,1,0 - meaning, to the sky
     this.light = new HemisphericLight('light1', new Vector3(0, 1, 0), this.scene);
 
-    // create a built-in "sphere" shape; its constructor takes 4 params: name, subdivisions, radius, scene
-    const cardSpadesAce = createCard(this.scene, SUIT.CLUBS, RANK.ACE, 10);
-    const cardSpadesAce2 = createCard(this.scene, SUIT.SPADES, RANK.JACK, 10);
-
-    // move the sphere upward 1/2 of its height
-    cardSpadesAce.position.y = 1;
-    cardSpadesAce2.position.x = 10;
+    createAll(this.scene, 3);
 
     // generates the world x-y-z axis for better understanding
     this.showWorldAxis(8);

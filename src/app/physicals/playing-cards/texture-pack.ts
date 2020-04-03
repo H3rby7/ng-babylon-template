@@ -17,9 +17,9 @@ const split = {
   vertical: 60,
 };
 
-const gridX = [SUIT.SPADES, SUIT.HEARTS, SUIT.DIAMONDS, SUIT.CLUBS];
+export const gridX = [SUIT.SPADES, SUIT.HEARTS, SUIT.DIAMONDS, SUIT.CLUBS];
 // tslint:disable-next-line:max-line-length
-const gridY = [RANK.ACE, RANK.TWO, RANK.THREE, RANK.FOUR, RANK.FIVE, RANK.SIX, RANK.SEVEN, RANK.EIGHT, RANK.NINE, RANK.TEN, RANK.JACK, RANK.QUEEN, RANK.KING];
+export const gridY = [RANK.ACE, RANK.TWO, RANK.THREE, RANK.FOUR, RANK.FIVE, RANK.SIX, RANK.SEVEN, RANK.EIGHT, RANK.NINE, RANK.TEN, RANK.JACK, RANK.QUEEN, RANK.KING];
 
 export const drawCardBySuitAndName = (dynTexture: BABYLON.DynamicTexture, materialDimension: Dimension, suit: SUIT, rank: RANK) => {
   // Get position of card in texture pack, when in doubt use {0, 0}
