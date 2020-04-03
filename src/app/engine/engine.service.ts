@@ -1,7 +1,8 @@
 import {WindowRefService} from '../services/window-ref.service';
 import {ElementRef, Injectable, NgZone} from '@angular/core';
 import 'babylonjs-materials';
-import {createCard} from '../physicals/playing-card';
+import {createCard} from '../physicals/playing-cards';
+import {RANK, SUIT} from '../physicals/playing-cards/constants';
 import Scene = BABYLON.Scene;
 import Engine = BABYLON.Engine;
 import Mesh = BABYLON.Mesh;
@@ -54,30 +55,30 @@ export class EngineService {
     this.light = new HemisphericLight('light1', new Vector3(0, 1, 0), this.scene);
 
     // create a built-in "sphere" shape; its constructor takes 4 params: name, subdivisions, radius, scene
-    const cardSpadesAce = createCard(this.scene, 'spades', 'ace', 10);
-    const cardSpadesAce2 = createCard(this.scene, 'spades', 'ace', 10);
+    const cardSpadesAce = createCard(this.scene, SUIT.CLUBS, RANK.ACE, 10);
+    const cardSpadesAce2 = createCard(this.scene, SUIT.SPADES, RANK.JACK, 10);
 
     // move the sphere upward 1/2 of its height
     cardSpadesAce.position.y = 1;
     cardSpadesAce2.position.x = 10;
 
-    // // simple rotation along the y axis
-    // cardSpadesAce.registerAfterRender(() => {
-    //   cardSpadesAce.rotate(
-    //     new Vector3(0, 1, 0),
-    //     0.02,
-    //     BABYLON.Space.LOCAL
-    //   );
-    // });
-    //
-    // // simple rotation along the y axis
-    // cardSpadesAce2.registerAfterRender(() => {
-    //   cardSpadesAce2.rotate(
-    //     new Vector3(0, 1, 0),
-    //     0.02,
-    //     BABYLON.Space.LOCAL
-    //   );
-    // });
+    // simple rotation along the y axis
+    cardSpadesAce.registerAfterRender(() => {
+      cardSpadesAce.rotate(
+        new Vector3(0, 1, 0),
+        0.02,
+        BABYLON.Space.LOCAL
+      );
+    });
+
+    // simple rotation along the y axis
+    cardSpadesAce2.registerAfterRender(() => {
+      cardSpadesAce2.rotate(
+        new Vector3(0, 1, 0),
+        0.02,
+        BABYLON.Space.LOCAL
+      );
+    });
 
     // generates the world x-y-z axis for better understanding
     this.showWorldAxis(8);
