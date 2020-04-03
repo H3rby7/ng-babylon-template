@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {EngineService} from '../../engine/engine.service';
+import {Component, OnInit} from '@angular/core';
+import {PlayingCardService} from '../../modules/playing-card/playing-card.service';
 
 @Component({
   selector: 'app-ui-infobar-top',
@@ -7,18 +7,22 @@ import {EngineService} from '../../engine/engine.service';
 })
 export class UiInfobarTopComponent implements OnInit {
 
-  public constructor(private readonly engine: EngineService) { }
+  public constructor(private readonly service: PlayingCardService) {
+  }
 
   public ngOnInit(): void {
   }
 
   public toGrid() {
-    this.engine.layoutToGrid();
+    this.service.layoutToGrid();
   }
 
-
   public toDeck() {
-    this.engine.layoutToDeck();
+    this.service.layoutToDeck();
+  }
+
+  public shuffle() {
+    this.service.shuffle();
   }
 
 }

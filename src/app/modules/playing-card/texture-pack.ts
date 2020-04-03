@@ -1,5 +1,5 @@
 import {RANK, SUIT} from './constants';
-import {Dimension} from '../dimension';
+import {Dimension} from '../../physicals/dimension';
 
 const backSideTextureSrc = 'assets/textures/card_back.jpg';
 const texturePackSrc = 'assets/textures/playing_cards_textures.svg';

@@ -1,7 +1,6 @@
 import {WindowRefService} from '../services/window-ref.service';
-import {ElementRef, Injectable, NgZone} from '@angular/core';
+import {ElementRef, EventEmitter, Injectable, NgZone} from '@angular/core';
 import 'babylonjs-materials';
-import {createAll} from '../physicals/playing-card/playing-card';
 import Scene = BABYLON.Scene;
 import Engine = BABYLON.Engine;
 import Mesh = BABYLON.Mesh;
@@ -14,8 +13,6 @@ import StandardMaterial = BABYLON.StandardMaterial;
 import Color3 = BABYLON.Color3;
 import HemisphericLight = BABYLON.HemisphericLight;
 
-const size = 3;
-
 @Injectable({providedIn: 'root'})
 export class EngineService {
   private canvas: HTMLCanvasElement;
@@ -24,7 +21,7 @@ export class EngineService {
   private scene: Scene;
   private light: Light;
 
-  private cards: Mesh[];
+  public onReady: EventEmitter<any> = new EventEmitter();
 
   public constructor(
     private ngZone: NgZone,
@@ -55,35 +52,13 @@ export class EngineService {
     this.light = new HemisphericLight('light1', new Vector3(0, 0, -1), this.scene);
     this.light = new HemisphericLight('light2', new Vector3(0, 0, 1), this.scene);
 
-    this.cards = createAll(this.scene, size);
-    this.layoutToGrid();
-
     // generates the world x-y-z axis for better understanding
     this.showWorldAxis(8);
+    this.onReady.emit('ready');
   }
 
-  // Create a nice grid and flip every second card
-  public layoutToGrid() {
-    console.log('grid layout');
-    for (let i = 0; i < this.cards.length; i++) {
-      const mesh = this.cards[i];
-      const x = (i % 13);
-      const y = Math.floor(i / 13 % 4);
-      mesh.position.x = x * size;
-      mesh.position.y = y * (size + 1);
-      mesh.rotation = new Vector3(0, (x + y) % 2 === 0 ? Math.PI : 0, 0);
-    }
-  }
-
-  // Create a deck
-  public layoutToDeck() {
-    console.log('deck layout');
-    for (let i = 0; i < this.cards.length; i++) {
-      const mesh = this.cards[i];
-      mesh.rotation = new Vector3(-0.5 * Math.PI, 0, 0);
-      mesh.position.y = 0.01 * i;
-      mesh.position.x = 0;
-    }
+  public getScene(): Scene {
+    return this.scene;
   }
 
   public animate(): void {
