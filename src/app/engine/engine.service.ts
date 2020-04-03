@@ -1,22 +1,23 @@
-import { WindowRefService } from './../services/window-ref.service';
+import {WindowRefService} from './../services/window-ref.service';
 import {ElementRef, Injectable, NgZone} from '@angular/core';
 import {
-  Engine,
-  FreeCamera,
-  Scene,
-  Light,
-  Mesh,
   Color3,
   Color4,
-  Vector3,
+  DynamicTexture,
+  Engine,
+  FreeCamera,
   HemisphericLight,
+  Light,
+  Mesh,
+  Scene,
   StandardMaterial,
   Texture,
-  DynamicTexture
+  Vector3
 } from 'babylonjs';
 import 'babylonjs-materials';
+import {createCard} from '../physicals/playing-card';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class EngineService {
   private canvas: HTMLCanvasElement;
   private engine: Engine;
@@ -29,14 +30,15 @@ export class EngineService {
   public constructor(
     private ngZone: NgZone,
     private windowRef: WindowRefService
-  ) {}
+  ) {
+  }
 
   public createScene(canvas: ElementRef<HTMLCanvasElement>): void {
     // The first step is to get the reference of the canvas element from our HTML document
     this.canvas = canvas.nativeElement;
 
     // Then, load the Babylon 3D engine:
-    this.engine = new Engine(this.canvas,  true);
+    this.engine = new Engine(this.canvas, true);
 
     // create a basic BJS Scene object
     this.scene = new Scene(this.engine);
@@ -55,19 +57,14 @@ export class EngineService {
     this.light = new HemisphericLight('light1', new Vector3(0, 1, 0), this.scene);
 
     // create a built-in "sphere" shape; its constructor takes 4 params: name, subdivisions, radius, scene
-    this.sphere = Mesh.CreateSphere('sphere1', 16, 2, this.scene);
-
-    // create the material with its texture for the sphere and assign it to the sphere
-    const spherMaterial = new StandardMaterial('sun_surface', this.scene);
-    spherMaterial.diffuseTexture = new Texture('assets/textures/sun.jpg', this.scene);
-    this.sphere.material = spherMaterial;
+    this.sphere = createCard(this.scene, 'jack_of_clubs');
 
     // move the sphere upward 1/2 of its height
     this.sphere.position.y = 1;
 
     // simple rotation along the y axis
     this.scene.registerAfterRender(() => {
-      this.sphere.rotate (
+      this.sphere.rotate(
         new Vector3(0, 1, 0),
         0.02,
         BABYLON.Space.LOCAL
@@ -112,7 +109,7 @@ export class EngineService {
     const makeTextPlane = (text: string, color: string, textSize: number) => {
       const dynamicTexture = new DynamicTexture('DynamicTexture', 50, this.scene, true);
       dynamicTexture.hasAlpha = true;
-      dynamicTexture.drawText(text, 5, 40, 'bold 36px Arial', color , 'transparent', true);
+      dynamicTexture.drawText(text, 5, 40, 'bold 36px Arial', color, 'transparent', true);
       const plane = Mesh.CreatePlane('TextPlane', textSize, this.scene, true);
       const material = new StandardMaterial('TextPlaneMaterial', this.scene);
       material.backFaceCulling = false;
@@ -140,8 +137,8 @@ export class EngineService {
     const axisY = Mesh.CreateLines(
       'axisY',
       [
-        Vector3.Zero(), new Vector3(0, size, 0), new Vector3( -0.05 * size, size * 0.95, 0),
-        new Vector3(0, size, 0), new Vector3( 0.05 * size, size * 0.95, 0)
+        Vector3.Zero(), new Vector3(0, size, 0), new Vector3(-0.05 * size, size * 0.95, 0),
+        new Vector3(0, size, 0), new Vector3(0.05 * size, size * 0.95, 0)
       ],
       this.scene
     );
@@ -153,8 +150,8 @@ export class EngineService {
     const axisZ = Mesh.CreateLines(
       'axisZ',
       [
-        Vector3.Zero(), new Vector3(0, 0, size), new Vector3( 0 , -0.05 * size, size * 0.95),
-        new Vector3(0, 0, size), new Vector3( 0, 0.05 * size, size * 0.95)
+        Vector3.Zero(), new Vector3(0, 0, size), new Vector3(0, -0.05 * size, size * 0.95),
+        new Vector3(0, 0, size), new Vector3(0, 0.05 * size, size * 0.95)
       ],
       this.scene
     );
