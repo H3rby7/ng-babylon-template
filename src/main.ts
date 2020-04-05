@@ -1,8 +1,13 @@
-import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import {enableProdMode} from '@angular/core';
+import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 
-import { AppModule } from './app/app.module';
-import { environment } from './environments/environment';
+import {AppModule} from './app/app.module';
+import {environment} from './environments/environment';
+
+import * as OIMO from 'oimo';
+
+// @ts-ignore
+window.OIMO = OIMO;
 
 if (environment.production) {
   enableProdMode();

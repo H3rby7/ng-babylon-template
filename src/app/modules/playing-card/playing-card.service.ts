@@ -2,7 +2,11 @@ import {gridX, gridY} from './texture-pack';
 import {Injectable} from '@angular/core';
 import {EngineService} from '../../engine/engine.service';
 import {PlayingCard} from './playing-card';
-import {Scene, Vector3} from '@babylonjs/core';
+import {PhysicsImpostor, Scene, Vector3} from '@babylonjs/core';
+
+const startX = -20;
+const startY = 1;
+const startZ = -10;
 
 @Injectable({providedIn: 'root'})
 export class PlayingCardService {
@@ -15,6 +19,7 @@ export class PlayingCardService {
       this.scene = this.engineService.getScene();
       this.cards = this.createAll();
       this.layoutToGrid();
+      this.cards.forEach(e => this.addPhysicsToCard(e));
     });
   }
 
@@ -35,14 +40,12 @@ export class PlayingCardService {
     console.log('grid layout');
     const faceDownRotation = 0.5 * Math.PI;
     const faceUpRotation = -0.5 * Math.PI;
-    const startX = -20;
-    const startZ = -10;
     for (let i = 0; i < this.cards.length; i++) {
       const card = this.cards[i];
       const x = (i % 13);
       const y = Math.floor(i / 13 % 4);
       card.mesh.position.x = startX + x * card.size;
-      card.mesh.position.y = 0.01;
+      card.mesh.position.y = startY;
       card.mesh.position.z = startZ + y * (card.size + 1) + 0.5 * card.size;
       const faceUp = (x + y) % 2 === 0;
       card.mesh.rotation = new Vector3(faceUp ? faceUpRotation : faceDownRotation, 0, 0);
@@ -56,7 +59,7 @@ export class PlayingCardService {
       const card = this.cards[i];
       card.mesh.rotation = new Vector3(-0.5 * Math.PI, 0, 0);
       card.mesh.position.x = 0;
-      card.mesh.position.y = 0.01 * i;
+      card.mesh.position.y = startY + 0.01 * i;
       card.mesh.position.z = 0;
     }
   }
@@ -71,6 +74,10 @@ export class PlayingCardService {
       this.cards[c2] = tmp;
     }
     this.layoutToGrid();
+  }
+
+  private addPhysicsToCard(card: PlayingCard) {
+    card.mesh.physicsImpostor = new PhysicsImpostor(card.mesh, PhysicsImpostor.BoxImpostor, {mass: 1, restitution: 0}, this.scene);
   }
 
 }

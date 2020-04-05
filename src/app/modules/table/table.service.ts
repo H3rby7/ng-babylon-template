@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Color3, Mesh, MeshBuilder, PhysicsImpostor, Scene, StandardMaterial} from '@babylonjs/core';
+import {Color3, Mesh, MeshBuilder, PhysicsImpostor, Scene, StandardMaterial, Vector3} from '@babylonjs/core';
 import {WoodProceduralTexture} from '@babylonjs/procedural-textures';
 
 @Injectable({providedIn: 'root'})
@@ -10,12 +10,12 @@ export class TableService {
 
   public createTable(scene: Scene, size = 50): Mesh {
 
-    const ground: Mesh = MeshBuilder.CreateGround('ground1', {width: size, height: size}, scene);
+    const ground: Mesh = MeshBuilder.CreateBox('ground1', {width: size, height: 1, depth: size}, scene);
 
     ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.BoxImpostor, {
       mass: 0,
       friction: 0.5,
-      restitution: 0.7
+      restitution: 0,
     }, scene);
 
     const material = new StandardMaterial(`tableMat`, scene);
@@ -29,6 +29,10 @@ export class TableService {
     material.diffuseTexture = woodTexture;
 
     ground.material = material;
+    ground.position.x = 0;
+    ground.position.y = 0;
+    ground.position.z = 0;
+    ground.rotation = new Vector3(0, 0, 0);
 
     return ground;
   }

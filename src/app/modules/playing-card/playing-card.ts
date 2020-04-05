@@ -1,7 +1,7 @@
 import {RANK, SUIT} from './constants';
 import {drawCardBySuitAndName} from './texture-pack';
 import {Dimension} from '../../physicals/dimension';
-import {Color3, DynamicTexture, Mesh, MeshBuilder, Scene, StandardMaterial, Vector4} from '@babylonjs/core';
+import {Color3, DynamicTexture, Mesh, MeshBuilder, PhysicsImpostor, Scene, StandardMaterial, Vector4} from '@babylonjs/core';
 
 // front image = half the whole image along the width
 const vectorToFrontSide = new Vector4(0.5, 0, 1, 1);
@@ -24,9 +24,10 @@ export class PlayingCard {
 
   public addToScene(scene: Scene): PlayingCard {
 
-    this.mesh = MeshBuilder.CreatePlane(this.rank, {
+    this.mesh = MeshBuilder.CreateBox(this.rank, {
       width: this.size * cardAspectRatio,
       height: this.size,
+      depth: 0.01,
       sideOrientation: Mesh.DOUBLESIDE,
       frontUVs: vectorToFrontSide,
       backUVs: vectorToBackSide,

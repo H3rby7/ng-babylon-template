@@ -9,11 +9,12 @@ import {
   FreeCamera,
   HemisphericLight,
   Mesh,
+  OimoJSPlugin, PhysicsImpostor,
   Scene,
   StandardMaterial,
   Vector3,
 } from '@babylonjs/core';
-import '@babylonjs/core/Physics/physicsEngineComponent';
+// import '@babylonjs/core/Physics/physicsEngineComponent';
 
 @Injectable({providedIn: 'root'})
 export class EngineService {
@@ -41,7 +42,7 @@ export class EngineService {
 
     // create a basic BJS Scene object
     this.scene = new Scene(this.engine);
-    this.scene.enablePhysics(new Vector3(0, 1, 0));
+    this.scene.enablePhysics(new Vector3(0, -9.81, 0), new OimoJSPlugin());
 
     this.scene.clearColor = new Color4(0, 0, 0, 0);
 
