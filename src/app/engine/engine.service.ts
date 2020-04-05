@@ -1,11 +1,12 @@
 import {WindowRefService} from '../services/window-ref.service';
 import {ElementRef, EventEmitter, Injectable, NgZone} from '@angular/core';
 import 'babylonjs-materials';
+import 'babylonjs-inspector';
+import {TableService} from '../modules/table/table.service';
 import Scene = BABYLON.Scene;
 import Engine = BABYLON.Engine;
 import Mesh = BABYLON.Mesh;
 import FreeCamera = BABYLON.FreeCamera;
-import Light = BABYLON.Light;
 import Color4 = BABYLON.Color4;
 import Vector3 = BABYLON.Vector3;
 import DynamicTexture = BABYLON.DynamicTexture;
@@ -19,13 +20,14 @@ export class EngineService {
   private engine: Engine;
   private camera: FreeCamera;
   private scene: Scene;
-  private light: Light;
+  private light: HemisphericLight;
 
   public onReady: EventEmitter<any> = new EventEmitter();
 
   public constructor(
     private ngZone: NgZone,
-    private windowRef: WindowRefService
+    private windowRef: WindowRefService,
+    private readonly tableService: TableService,
   ) {
   }
 
@@ -49,11 +51,19 @@ export class EngineService {
     // attach the camera to the canvas
     this.camera.attachControl(this.canvas, false);
 
-    this.light = new HemisphericLight('light1', new Vector3(0, 0, -1), this.scene);
-    this.light = new HemisphericLight('light2', new Vector3(0, 0, 1), this.scene);
+    const lightColor = new Color3(1, 0.8, 0.8);
+    this.light = new HemisphericLight('light1', new Vector3(-1, 1, 0), this.scene);
+    this.light.diffuse = lightColor;
+    this.light.specular = lightColor;
+    this.light.range = 20;
 
     // generates the world x-y-z axis for better understanding
     this.showWorldAxis(8);
+
+    this.tableService.createTable(this.scene);
+
+    this.scene.debugLayer.show();
+
     this.onReady.emit('ready');
   }
 

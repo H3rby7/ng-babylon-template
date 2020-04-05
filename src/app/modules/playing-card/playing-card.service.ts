@@ -34,13 +34,19 @@ export class PlayingCardService {
   // Create a nice grid and flip every second card
   public layoutToGrid() {
     console.log('grid layout');
+    const faceDownRotation = 0.5 * Math.PI;
+    const faceUpRotation = -0.5 * Math.PI;
+    const startX = -20;
+    const startZ = -10;
     for (let i = 0; i < this.cards.length; i++) {
       const card = this.cards[i];
       const x = (i % 13);
       const y = Math.floor(i / 13 % 4);
-      card.mesh.position.x = x * card.size;
-      card.mesh.position.y = y * (card.size + 1);
-      card.mesh.rotation = new Vector3(0, (x + y) % 2 === 0 ? Math.PI : 0, 0);
+      card.mesh.position.x = startX + x * card.size;
+      card.mesh.position.y = 0.01;
+      card.mesh.position.z = startZ + y * (card.size + 1) + 0.5 * card.size;
+      const faceUp = (x + y) % 2 === 0;
+      card.mesh.rotation = new Vector3(faceUp ? faceUpRotation : faceDownRotation, 0, 0);
     }
   }
 
@@ -50,8 +56,9 @@ export class PlayingCardService {
     for (let i = 0; i < this.cards.length; i++) {
       const card = this.cards[i];
       card.mesh.rotation = new Vector3(-0.5 * Math.PI, 0, 0);
-      card.mesh.position.y = 0.01 * i;
       card.mesh.position.x = 0;
+      card.mesh.position.y = 0.01 * i;
+      card.mesh.position.z = 0;
     }
   }
 
