@@ -2,8 +2,7 @@ import {gridX, gridY} from './texture-pack';
 import {Injectable} from '@angular/core';
 import {EngineService} from '../../engine/engine.service';
 import {PlayingCard} from './playing-card';
-import Scene = BABYLON.Scene;
-import Vector3 = BABYLON.Vector3;
+import {Scene, Vector3} from '@babylonjs/core';
 
 @Injectable({providedIn: 'root'})
 export class PlayingCardService {

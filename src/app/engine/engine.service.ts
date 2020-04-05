@@ -1,18 +1,19 @@
 import {WindowRefService} from '../services/window-ref.service';
 import {ElementRef, EventEmitter, Injectable, NgZone} from '@angular/core';
-import 'babylonjs-materials';
-import 'babylonjs-inspector';
 import {TableService} from '../modules/table/table.service';
-import Scene = BABYLON.Scene;
-import Engine = BABYLON.Engine;
-import Mesh = BABYLON.Mesh;
-import FreeCamera = BABYLON.FreeCamera;
-import Color4 = BABYLON.Color4;
-import Vector3 = BABYLON.Vector3;
-import DynamicTexture = BABYLON.DynamicTexture;
-import StandardMaterial = BABYLON.StandardMaterial;
-import Color3 = BABYLON.Color3;
-import HemisphericLight = BABYLON.HemisphericLight;
+import {
+  Color3,
+  Color4,
+  DynamicTexture,
+  Engine,
+  FreeCamera,
+  HemisphericLight,
+  Mesh,
+  Scene,
+  StandardMaterial,
+  Vector3,
+} from '@babylonjs/core';
+import '@babylonjs/core/Physics/physicsEngineComponent';
 
 @Injectable({providedIn: 'root'})
 export class EngineService {
@@ -40,6 +41,8 @@ export class EngineService {
 
     // create a basic BJS Scene object
     this.scene = new Scene(this.engine);
+    this.scene.enablePhysics(new Vector3(0, 1, 0));
+
     this.scene.clearColor = new Color4(0, 0, 0, 0);
 
     // create a FreeCamera, and set its position to (x:5, y:10, z:-20 )
@@ -50,19 +53,17 @@ export class EngineService {
 
     // attach the camera to the canvas
     this.camera.attachControl(this.canvas, false);
-
     const lightColor = new Color3(1, 0.8, 0.8);
     this.light = new HemisphericLight('light1', new Vector3(-1, 1, 0), this.scene);
     this.light.diffuse = lightColor;
     this.light.specular = lightColor;
+
     this.light.range = 20;
 
     // generates the world x-y-z axis for better understanding
     this.showWorldAxis(8);
 
     this.tableService.createTable(this.scene);
-
-    this.scene.debugLayer.show();
 
     this.onReady.emit('ready');
   }
@@ -109,7 +110,7 @@ export class EngineService {
       const plane = Mesh.CreatePlane('TextPlane', textSize, this.scene, true);
       const material = new StandardMaterial('TextPlaneMaterial', this.scene);
       material.backFaceCulling = false;
-      material.specularColor = new BABYLON.Color3(0, 0, 0);
+      material.specularColor = new Color3(0, 0, 0);
       material.diffuseTexture = dynamicTexture;
       plane.material = material;
 
@@ -126,7 +127,7 @@ export class EngineService {
       this.scene
     );
 
-    axisX.color = new BABYLON.Color3(1, 0, 0);
+    axisX.color = new Color3(1, 0, 0);
     const xChar = makeTextPlane('X', 'red', size / 10);
     xChar.position = new Vector3(0.9 * size, -0.05 * size, 0);
 

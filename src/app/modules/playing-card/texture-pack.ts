@@ -1,5 +1,6 @@
 import {RANK, SUIT} from './constants';
 import {Dimension} from '../../physicals/dimension';
+import {DynamicTexture} from '@babylonjs/core';
 
 const backSideTextureSrc = 'assets/textures/card_back.jpg';
 const texturePackSrc = 'assets/textures/playing_cards_textures.svg';
@@ -21,7 +22,7 @@ export const gridX = [SUIT.SPADES, SUIT.HEARTS, SUIT.DIAMONDS, SUIT.CLUBS];
 // tslint:disable-next-line:max-line-length
 export const gridY = [RANK.ACE, RANK.TWO, RANK.THREE, RANK.FOUR, RANK.FIVE, RANK.SIX, RANK.SEVEN, RANK.EIGHT, RANK.NINE, RANK.TEN, RANK.JACK, RANK.QUEEN, RANK.KING];
 
-export const drawCardBySuitAndName = (dynTexture: BABYLON.DynamicTexture, materialDimension: Dimension, suit: SUIT, rank: RANK) => {
+export const drawCardBySuitAndName = (dynTexture: DynamicTexture, materialDimension: Dimension, suit: SUIT, rank: RANK) => {
   // As the card will be same height as the material, but only half as wide, as the material has front/backside
   const cardWidth = materialDimension.width / 2;
   // Get position of card in texture pack, when in doubt use {0, 0}
