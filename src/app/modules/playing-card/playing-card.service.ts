@@ -1,12 +1,21 @@
 import {gridX, gridY} from './texture-pack';
 import {Injectable} from '@angular/core';
 import {EngineService} from '../../engine/engine.service';
-import {PlayingCard} from './playing-card';
-import {PhysicsImpostor, Scene, Vector3} from '@babylonjs/core';
+import {PlayingCard, CARD_THICKNESS} from './playing-card';
+import {Scene, Vector3} from '@babylonjs/core';
 
-const startX = -20;
+const startX = -100;
 const startY = 1;
-const startZ = -10;
+const startZ = -40;
+
+function getFaceRotation(isFaceUp: boolean): Vector3 {
+  if (isFaceUp) {
+    return new Vector3(-0.5 * Math.PI, 0, 0);
+  } else {
+    return new Vector3(0.5 * Math.PI, 0, 0);
+  }
+}
+
 
 @Injectable({providedIn: 'root'})
 export class PlayingCardService {
@@ -18,17 +27,23 @@ export class PlayingCardService {
     this.engineService.onReady.subscribe(() => {
       this.scene = this.engineService.getScene();
       this.cards = this.createAll();
-      this.layoutToGrid();
-      this.cards.forEach(e => this.addPhysicsToCard(e));
+      this.cards.forEach(e => e.enablePhysics(this.scene));
     });
   }
 
   public createAll(): PlayingCard[] {
     const cards: PlayingCard[] = [];
     for (const x of gridX) {
+      const xI = gridX.indexOf(x);
       for (const y of gridY) {
+        const yI = gridY.indexOf(y);
         const c = new PlayingCard(x, y);
         c.addToScene(this.scene);
+        c.mesh.position.x = startX + yI * c.size;
+        c.mesh.position.y = startY;
+        c.mesh.position.z = startZ + xI * (c.size + 1) + 0.5 * c.size;
+        const faceUp = (xI + yI) % 2 === 0;
+        c.mesh.rotation = getFaceRotation(faceUp);
         cards.push(c);
       }
     }
@@ -38,17 +53,15 @@ export class PlayingCardService {
   // Create a nice grid and flip every second card
   public layoutToGrid() {
     console.log('grid layout');
-    const faceDownRotation = 0.5 * Math.PI;
-    const faceUpRotation = -0.5 * Math.PI;
     for (let i = 0; i < this.cards.length; i++) {
       const card = this.cards[i];
       const x = (i % 13);
       const y = Math.floor(i / 13 % 4);
-      card.mesh.position.x = startX + x * card.size;
-      card.mesh.position.y = startY;
-      card.mesh.position.z = startZ + y * (card.size + 1) + 0.5 * card.size;
+      card.position.x = startX + x * card.size;
+      card.position.y = startY;
+      card.position.z = startZ + y * (card.size + 1) + 0.5 * card.size;
       const faceUp = (x + y) % 2 === 0;
-      card.mesh.rotation = new Vector3(faceUp ? faceUpRotation : faceDownRotation, 0, 0);
+      card.mesh.rotation = getFaceRotation(faceUp);
     }
   }
 
@@ -57,10 +70,10 @@ export class PlayingCardService {
     console.log('deck layout');
     for (let i = 0; i < this.cards.length; i++) {
       const card = this.cards[i];
-      card.mesh.rotation = new Vector3(-0.5 * Math.PI, 0, 0);
-      card.mesh.position.x = 0;
-      card.mesh.position.y = startY + 0.01 * i;
-      card.mesh.position.z = 0;
+      card.mesh.rotation = getFaceRotation(false);
+      card.position.x = 0;
+      card.position.y = startY + 1.5 * CARD_THICKNESS * i;
+      card.position.z = 0;
     }
   }
 
@@ -74,10 +87,6 @@ export class PlayingCardService {
       this.cards[c2] = tmp;
     }
     this.layoutToGrid();
-  }
-
-  private addPhysicsToCard(card: PlayingCard) {
-    card.mesh.physicsImpostor = new PhysicsImpostor(card.mesh, PhysicsImpostor.BoxImpostor, {mass: 1, restitution: 0}, this.scene);
   }
 
 }

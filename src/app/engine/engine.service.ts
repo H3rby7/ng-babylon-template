@@ -2,6 +2,7 @@ import {WindowRefService} from '../services/window-ref.service';
 import {ElementRef, EventEmitter, Injectable, NgZone} from '@angular/core';
 import {TableService} from '../modules/table/table.service';
 import {
+  CannonJSPlugin,
   Color3,
   Color4,
   DynamicTexture,
@@ -64,7 +65,7 @@ export class EngineService {
     // generates the world x-y-z axis for better understanding
     this.showWorldAxis(8);
 
-    this.tableService.createTable(this.scene);
+    this.tableService.createTable(this.scene, 300);
 
     this.onReady.emit('ready');
   }
