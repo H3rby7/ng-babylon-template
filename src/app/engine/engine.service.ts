@@ -2,7 +2,7 @@ import {WindowRefService} from '../services/window-ref.service';
 import {ElementRef, EventEmitter, Injectable, NgZone} from '@angular/core';
 import {TableService} from '../modules/table/table.service';
 import {
-  CannonJSPlugin,
+  AmmoJSPlugin,
   Color3,
   Color4,
   DynamicTexture,
@@ -10,12 +10,10 @@ import {
   FreeCamera,
   HemisphericLight,
   Mesh,
-  OimoJSPlugin, PhysicsImpostor,
   Scene,
   StandardMaterial,
   Vector3,
 } from '@babylonjs/core';
-// import '@babylonjs/core/Physics/physicsEngineComponent';
 
 @Injectable({providedIn: 'root'})
 export class EngineService {
@@ -43,7 +41,7 @@ export class EngineService {
 
     // create a basic BJS Scene object
     this.scene = new Scene(this.engine);
-    this.scene.enablePhysics(new Vector3(0, -9.81, 0), new OimoJSPlugin());
+    this.scene.enablePhysics(new Vector3(0, -9.81, 0), new AmmoJSPlugin());
 
     this.scene.clearColor = new Color4(0, 0, 0, 0);
 
@@ -65,7 +63,7 @@ export class EngineService {
     // generates the world x-y-z axis for better understanding
     this.showWorldAxis(8);
 
-    this.tableService.createTable(this.scene, 300);
+    this.tableService.createTable(this.scene, 50);
 
     this.onReady.emit('ready');
   }

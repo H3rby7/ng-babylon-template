@@ -22,6 +22,7 @@
     "@angular/platform-browser": "^9.0.0",
     "@angular/platform-browser-dynamic": "^9.0.0",
     "@angular/router": "^9.0.0",
+    "ammo.js": "git+https://github.com/kripken/ammo.js.git#78b6db1f512b374ab3035f530851dc888678747f",
     "bootstrap": "^4.4.1",
     "oimo": "^1.0.9",
     "rxjs": "~6.5.2",
