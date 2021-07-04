@@ -20,7 +20,7 @@ const split = {
 
 export const gridX = [SUIT.SPADES, SUIT.HEARTS, SUIT.DIAMONDS, SUIT.CLUBS];
 // tslint:disable-next-line:max-line-length
-export const gridY = [RANK.ACE, RANK.TWO, RANK.THREE, RANK.FOUR, RANK.FIVE, RANK.SIX, RANK.SEVEN, RANK.EIGHT, RANK.NINE, RANK.TEN, RANK.JACK, RANK.QUEEN, RANK.KING];
+export const gridY = [RANK.ACE];
 
 export const drawCardBySuitAndName = (dynTexture: DynamicTexture, materialDimension: Dimension, suit: SUIT, rank: RANK) => {
   // As the card will be same height as the material, but only half as wide, as the material has front/backside

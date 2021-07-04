@@ -30,7 +30,9 @@
             "styles": [
               "src/styles/main.scss"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/ammo.js/builds/ammo.js"
+            ],
             "stylePreprocessorOptions": {
               "includePaths": [
                 "src/styles"

@@ -33,6 +33,7 @@ export class EngineService {
   }
 
   public createScene(canvas: ElementRef<HTMLCanvasElement>): void {
+    console.log(`Creating scene in ${canvas.nativeElement.id}`);
     // The first step is to get the reference of the canvas element from our HTML document
     this.canvas = canvas.nativeElement;
 
@@ -65,7 +66,9 @@ export class EngineService {
 
     this.tableService.createTable(this.scene, 50);
 
-    this.onReady.emit('ready');
+    this.scene.executeWhenReady(() => {
+      this.onReady.emit('ready');
+    });
   }
 
   public getScene(): Scene {

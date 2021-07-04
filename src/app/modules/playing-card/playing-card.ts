@@ -14,7 +14,7 @@ import {
   Vector4
 } from '@babylonjs/core';
 
-export const CARD_THICKNESS = 0.1;
+export const CARD_THICKNESS = 0.05;
 
 // front image = half the whole image along the width
 const vectorToFrontSide = new Vector4(0.5, 0, 1, 1);
@@ -38,10 +38,11 @@ const cardAspectRatio = (MATERIAL_SIZE.width / 2) / MATERIAL_SIZE.height;
 
 export class PlayingCard {
   public mesh: Mesh;
-  public size = 20;
+  public size = 4;
   public position = Vector3.Zero();
 
   public constructor(public suit: SUIT, public rank: RANK) {
+    console.log(`Created ${this}`);
   }
 
   public addToScene(scene: Scene): PlayingCard {
@@ -65,6 +66,7 @@ export class PlayingCard {
 
     this.mesh.material = cardMaterial;
 
+    scene.addMesh(this.mesh);
     return this;
   }
 
@@ -73,6 +75,10 @@ export class PlayingCard {
       PhysicsImpostor.BoxImpostor,
       {mass: 0, restitution: 0, friction: 1, stiffness: 1},
       scene);
-    this.position = this.mesh.physicsImpostor.physicsBody.position;
+    this.position = this.mesh.position;
+  }
+
+  public toString(): string {
+    return `${this.rank} of ${this.suit}, located at: ${this.position}`;
   }
 }

@@ -1,12 +1,12 @@
 import {gridX, gridY} from './texture-pack';
 import {Injectable} from '@angular/core';
 import {EngineService} from '../../engine/engine.service';
-import {PlayingCard, CARD_THICKNESS} from './playing-card';
+import {CARD_THICKNESS, PlayingCard} from './playing-card';
 import {Scene, Vector3} from '@babylonjs/core';
 
-const startX = -100;
+const startX = -10;
 const startY = 1;
-const startZ = -40;
+const startZ = -4;
 
 function getFaceRotation(isFaceUp: boolean): Vector3 {
   if (isFaceUp) {
@@ -25,13 +25,17 @@ export class PlayingCardService {
 
   public constructor(private readonly engineService: EngineService) {
     this.engineService.onReady.subscribe(() => {
+      console.log(`Received 'Ready' Signal from EngineService`);
       this.scene = this.engineService.getScene();
       this.cards = this.createAll();
-      this.cards.forEach(e => e.enablePhysics(this.scene));
+      this.cards.forEach(e => {
+        e.enablePhysics(this.scene);
+      });
     });
   }
 
   public createAll(): PlayingCard[] {
+    console.log('Creating all playing cards');
     const cards: PlayingCard[] = [];
     for (const x of gridX) {
       const xI = gridX.indexOf(x);
@@ -57,9 +61,12 @@ export class PlayingCardService {
       const card = this.cards[i];
       const x = (i % 13);
       const y = Math.floor(i / 13 % 4);
-      card.position.x = startX + x * card.size;
-      card.position.y = startY;
-      card.position.z = startZ + y * (card.size + 1) + 0.5 * card.size;
+      this.moveCard(
+        card,
+        startX + x * card.size,
+        startY,
+        startZ + y * (card.size + 1) + 0.5 * card.size
+      );
       const faceUp = (x + y) % 2 === 0;
       card.mesh.rotation = getFaceRotation(faceUp);
     }
@@ -71,9 +78,17 @@ export class PlayingCardService {
     for (let i = 0; i < this.cards.length; i++) {
       const card = this.cards[i];
       card.mesh.rotation = getFaceRotation(false);
-      card.position.x = 0;
-      card.position.y = startY + 1.5 * CARD_THICKNESS * i;
-      card.position.z = 0;
+      this.moveCard(card, 0, startY + 1.5 * CARD_THICKNESS * i, 0);
+    }
+  }
+
+  public moveCard(card: PlayingCard, x: number, y: number, z: number) {
+    console.log(`Card was at: ${card}`);
+    this.scene.executeOnceBeforeRender(move);
+    console.log(`Is now at: ${card}`);
+
+    function move(): void {
+      card.position.set(x, y, z);
     }
   }
 
